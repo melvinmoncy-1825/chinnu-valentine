@@ -261,3 +261,159 @@ h1{
     background: #fff;             /* looks clean with contain */
   }
 }
+/* ===== Envelope Surprise Modal ===== */
+.modal{
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 999;
+}
+.modal.show{ display: block; }
+
+.modal-backdrop{
+  position:absolute;
+  inset:0;
+  background: rgba(0,0,0,.25);
+  backdrop-filter: blur(2px);
+}
+
+.envelope-wrap{
+  position: relative;
+  z-index: 1;
+  width: min(420px, 92vw);
+  margin: 18vh auto 0;
+  text-align: center;
+}
+
+.modal-x{
+  position:absolute;
+  right: 0;
+  top: -52px;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 3px solid var(--border);
+  background: #fff;
+  font-size: 22px;
+  font-weight: 1000;
+  cursor: pointer;
+  box-shadow: 0 8px 0 rgba(0,0,0,.10);
+}
+
+.hint{
+  margin-top: 14px;
+  font-weight: 900;
+  color: var(--muted);
+}
+
+.envelope{
+  position: relative;
+  width: 320px;
+  height: 210px;
+  margin: 0 auto;
+  cursor: pointer;
+  transform: translateY(0);
+  transition: transform .18s ease;
+}
+.envelope:active{ transform: translateY(2px); }
+
+.env-back{
+  position:absolute;
+  inset:0;
+  background: #fff;
+  border: 3px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 10px 0 rgba(0,0,0,.10);
+}
+
+/* Front triangles */
+.env-front{
+  position:absolute;
+  inset:0;
+  border-radius: 20px;
+  overflow:hidden;
+  pointer-events:none;
+}
+.env-front::before{
+  content:"";
+  position:absolute;
+  left:0; right:0; bottom:0;
+  height: 70%;
+  background:
+    linear-gradient(135deg, transparent 50%, rgba(255,59,107,.18) 50%) left,
+    linear-gradient(225deg, transparent 50%, rgba(255,59,107,.18) 50%) right;
+  background-size: 50% 100%;
+  background-repeat:no-repeat;
+}
+
+/* Flap */
+.env-flap{
+  position:absolute;
+  left: 10px; right:10px;
+  top: 10px;
+  height: 115px;
+  background: linear-gradient(135deg, rgba(255,59,107,.25), rgba(255,122,162,.18));
+  border: 3px solid var(--border);
+  border-bottom: none;
+  border-radius: 18px 18px 14px 14px;
+  transform-origin: top center;
+  transform: rotateX(0deg);
+  transition: transform .55s ease;
+}
+
+/* Paper */
+.env-paper{
+  position:absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 18px;
+  height: 145px;
+  background: #fff;
+  border: 3px solid var(--border);
+  border-radius: 16px;
+  transform: translateY(70px);
+  transition: transform .55s ease;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 16px;
+}
+
+.paper-text{
+  font-weight: 1000;
+  font-size: 22px;
+  color: var(--red);
+  letter-spacing: .5px;
+}
+
+/* Heart seal */
+.env-heart{
+  position:absolute;
+  left: 50%;
+  bottom: 34px;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--red), var(--red2));
+  border: 3px solid var(--border);
+  display:grid;
+  place-items:center;
+  color:#fff;
+  font-size: 20px;
+  box-shadow: 0 8px 0 rgba(0,0,0,.10);
+}
+
+/* Open state */
+.envelope.open .env-flap{
+  transform: rotateX(165deg);
+}
+.envelope.open .env-paper{
+  transform: translateY(-10px);
+}
+
+/* Mobile sizing */
+@media (max-width: 420px){
+  .envelope{ width: 280px; height: 190px; }
+  .paper-text{ font-size: 20px; }
+}

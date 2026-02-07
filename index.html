@@ -33,7 +33,26 @@
   </main>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+<!-- Surprise Envelope Modal -->
+<div id="envelopeModal" class="modal" aria-hidden="true">
+  <div class="modal-backdrop" id="closeEnvelope"></div>
 
+  <div class="envelope-wrap" role="dialog" aria-modal="true" aria-label="Surprise">
+    <button class="modal-x" id="closeEnvelopeX" aria-label="Close">×</button>
+
+    <div class="envelope" id="envelope">
+      <div class="env-back"></div>
+      <div class="env-paper">
+        <div class="paper-text">I LOVE YOU BABY 🤍🌹</div>
+      </div>
+      <div class="env-front"></div>
+      <div class="env-flap"></div>
+      <div class="env-heart">❤</div>
+    </div>
+
+    <p class="hint">Tap the envelope to open 💌</p>
+  </div>
+</div>
   <script src="script.js"></script>
 </body>
 </html>
