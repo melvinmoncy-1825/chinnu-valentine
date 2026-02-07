@@ -206,13 +206,23 @@ h1{
 }
 .gallery img{
   width:100%;
-  height: auto;              /* ✅ let the image keep its full height */
-  object-fit: contain;       /* ✅ no crop */
+  height: 240px;
+  object-fit: cover;
   border-radius: 18px;
   border: 3px solid var(--border);
   box-shadow: 0 8px 0 rgba(0,0,0,.10);
-  display:block;
 }
+
+/* Mobile: show full photos */
+@media (max-width: 600px){
+  .gallery{ grid-template-columns: 1fr; }
+  .gallery img{
+    height: auto;
+    object-fit: contain;
+    max-height: 520px;
+    background:#fff;
+    display:block;
+  }
 }
 
 /* Note */
@@ -249,19 +259,8 @@ h1{
   z-index: 3;
 }
 .toast.show{ opacity: 1; }
-@media (max-width: 600px){
-  .gallery{
-    grid-template-columns: 1fr;   /* one photo per row */
-  }
 
-  .gallery img{
-    height: auto;                 /* ✅ no forced crop */
-    object-fit: contain;          /* ✅ show full image */
-    max-height: 520px;            /* prevents huge tall images */
-    background: #fff;             /* looks clean with contain */
-  }
-}
-/* ===== Envelope Surprise Modal ===== */
+/* ===== Envelope Modal ===== */
 .modal{
   position: fixed;
   inset: 0;
@@ -317,6 +316,7 @@ h1{
 }
 .envelope:active{ transform: translateY(2px); }
 
+/* layers */
 .env-back{
   position:absolute;
   inset:0;
@@ -324,21 +324,52 @@ h1{
   border: 3px solid var(--border);
   border-radius: 20px;
   box-shadow: 0 10px 0 rgba(0,0,0,.10);
+  z-index: 1;
 }
 
-/* Front triangles */
+/* paper starts hidden */
+.env-paper{
+  position:absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 16px;
+  height: 145px;
+  background: #fff;
+  border: 3px solid var(--border);
+  border-radius: 16px;
+
+  transform: translateY(120px);  /* ✅ hidden inside */
+  transition: transform .55s ease;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 16px;
+
+  z-index: 2;
+}
+
+.paper-text{
+  font-weight: 1000;
+  font-size: 22px;
+  color: var(--red);
+  letter-spacing: .5px;
+}
+
+/* front cover hides paper */
 .env-front{
   position:absolute;
   inset:0;
   border-radius: 20px;
-  overflow:hidden;
+  overflow:hidden;          /* ✅ hides paper behind it */
   pointer-events:none;
+  z-index: 3;
 }
 .env-front::before{
   content:"";
   position:absolute;
   left:0; right:0; bottom:0;
-  height: 70%;
+  height: 72%;
   background:
     linear-gradient(135deg, transparent 50%, rgba(255,59,107,.18) 50%) left,
     linear-gradient(225deg, transparent 50%, rgba(255,59,107,.18) 50%) right;
@@ -346,7 +377,7 @@ h1{
   background-repeat:no-repeat;
 }
 
-/* Flap */
+/* flap above all */
 .env-flap{
   position:absolute;
   left: 10px; right:10px;
@@ -359,34 +390,10 @@ h1{
   transform-origin: top center;
   transform: rotateX(0deg);
   transition: transform .55s ease;
+  z-index: 4;
 }
 
-/* Paper */
-.env-paper{
-  position:absolute;
-  left: 22px;
-  right: 22px;
-  bottom: 18px;
-  height: 145px;
-  background: #fff;
-  border: 3px solid var(--border);
-  border-radius: 16px;
-  transform: translateY(70px);
-  transition: transform .55s ease;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding: 16px;
-}
-
-.paper-text{
-  font-weight: 1000;
-  font-size: 22px;
-  color: var(--red);
-  letter-spacing: .5px;
-}
-
-/* Heart seal */
+/* heart seal */
 .env-heart{
   position:absolute;
   left: 50%;
@@ -402,17 +409,13 @@ h1{
   color:#fff;
   font-size: 20px;
   box-shadow: 0 8px 0 rgba(0,0,0,.10);
+  z-index: 5;
 }
 
-/* Open state */
-.envelope.open .env-flap{
-  transform: rotateX(165deg);
-}
-.envelope.open .env-paper{
-  transform: translateY(-10px);
-}
+/* open state */
+.envelope.open .env-flap{ transform: rotateX(165deg); }
+.envelope.open .env-paper{ transform: translateY(-14px); }
 
-/* Mobile sizing */
 @media (max-width: 420px){
   .envelope{ width: 280px; height: 190px; }
   .paper-text{ font-size: 20px; }
