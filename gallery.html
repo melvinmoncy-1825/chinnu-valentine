@@ -24,9 +24,13 @@
 
     <p class="subtitle">Some moments I never want to forget.</p>
 
-    <!-- ✅ Music control (works on phones after tap) -->
+    <!-- ✅ Music button (works on phones) -->
     <button class="btn" id="musicBtn" type="button">▶️ Play music</button>
-    <audio id="bgMusic" loop preload="metadata" playsinline>
+
+    <!-- ✅ Audio: keep mp3, optional m4a for iPhone -->
+    <audio id="bgMusic" loop preload="auto" playsinline>
+      <!-- If you have love.m4a, keep this line. If not, delete it. -->
+      <!-- <source src="music/love.m4a" type="audio/mp4"> -->
       <source src="music/love.mp3" type="audio/mpeg">
     </audio>
 
@@ -47,6 +51,7 @@
     <p class="tiny">🤍🌹</p>
   </main>
 
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="script.js"></script>
 </body>
 </html>

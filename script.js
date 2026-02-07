@@ -1,4 +1,5 @@
 window.addEventListener("DOMContentLoaded", () => {
+  // ===== Common elements =====
   const flowersLayer = document.getElementById("flowers");
   const btn = document.getElementById("surpriseBtn");
   const toast = document.getElementById("toast");
@@ -15,7 +16,7 @@ window.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => toast.classList.remove("show"), 2200);
   }
 
-  // ===== Falling flowers =====
+  // ===== Falling flowers (all pages) =====
   const flowerEmojis = ["🌸", "🌺", "🌷", "🌹", "💮", "🌼"];
 
   function spawnFlower() {
@@ -46,7 +47,7 @@ window.addEventListener("DOMContentLoaded", () => {
     for (let i = 0; i < count; i++) spawnFlower();
   }
 
-  // ===== Envelope modal =====
+  // ===== Envelope (index page only) =====
   function openEnvelopeModal() {
     if (!modal) return;
     modal.classList.add("show");
@@ -85,9 +86,11 @@ window.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Escape") closeEnvelopeModal();
   });
 
-  // ===== MUSIC (Android + iPhone reliable) =====
+  // ===== MUSIC (stable on Android + iPhone) =====
   const bgMusic = document.getElementById("bgMusic");
   const musicBtn = document.getElementById("musicBtn");
+
+  let musicStarting = false;
 
   function setMusicButtonText() {
     if (!musicBtn || !bgMusic) return;
@@ -95,15 +98,25 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   async function startMusic() {
-    if (!bgMusic) return;
+    if (!bgMusic || musicStarting) return;
+    musicStarting = true;
+    if (musicBtn) musicBtn.disabled = true;
+
     try {
       bgMusic.volume = 0.85;
-      await bgMusic.play(); // must be user gesture on phones
+
+      // Only play triggered by button click (required on phones)
+      await bgMusic.play();
+
       localStorage.setItem("playMusic", "yes");
+      showToast("Music on 🎶");
     } catch (err) {
-      alert("Music not playing: " + (err?.message || err));
+      showToast("Music not loading 😕");
+    } finally {
+      musicStarting = false;
+      if (musicBtn) musicBtn.disabled = false;
+      setMusicButtonText();
     }
-    setMusicButtonText();
   }
 
   function stopMusic() {
@@ -111,20 +124,18 @@ window.addEventListener("DOMContentLoaded", () => {
     bgMusic.pause();
     localStorage.setItem("playMusic", "no");
     setMusicButtonText();
+    showToast("Music off");
   }
 
   if (musicBtn && bgMusic) {
     setMusicButtonText();
-    musicBtn.addEventListener("click", () => {
-      if (bgMusic.paused) startMusic();
+
+    musicBtn.addEventListener("click", async () => {
+      if (bgMusic.paused) await startMusic();
       else stopMusic();
     });
-  }
 
-  // Optional: if user previously enabled, try on first tap anywhere
-  if (bgMusic && localStorage.getItem("playMusic") === "yes") {
-    const firstTap = () => startMusic();
-    document.addEventListener("touchstart", firstTap, { once: true });
-    document.addEventListener("click", firstTap, { once: true });
+    bgMusic.addEventListener("play", setMusicButtonText);
+    bgMusic.addEventListener("pause", setMusicButtonText);
   }
 });
