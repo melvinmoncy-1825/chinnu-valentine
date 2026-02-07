@@ -104,11 +104,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     try {
       bgMusic.volume = 0.85;
-
-      // Only play triggered by button click (required on phones)
       await bgMusic.play();
-
-      localStorage.setItem("playMusic", "yes");
       showToast("Music on 🎶");
     } catch (err) {
       showToast("Music not loading 😕");
@@ -122,14 +118,12 @@ window.addEventListener("DOMContentLoaded", () => {
   function stopMusic() {
     if (!bgMusic) return;
     bgMusic.pause();
-    localStorage.setItem("playMusic", "no");
     setMusicButtonText();
     showToast("Music off");
   }
 
   if (musicBtn && bgMusic) {
     setMusicButtonText();
-
     musicBtn.addEventListener("click", async () => {
       if (bgMusic.paused) await startMusic();
       else stopMusic();

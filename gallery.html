@@ -24,34 +24,50 @@
 
     <p class="subtitle">Some moments I never want to forget.</p>
 
-    <!-- ✅ Music button (works on phones) -->
+    <!-- ✅ Music button -->
     <button class="btn" id="musicBtn" type="button">▶️ Play music</button>
 
-    <!-- ✅ Audio: keep mp3, optional m4a for iPhone -->
+    <!-- ✅ Audio -->
     <audio id="bgMusic" loop preload="auto" playsinline>
-      <!-- If you have love.m4a, keep this line. If not, delete it. -->
-      <!-- <source src="music/love.m4a" type="audio/mp4"> -->
       <source src="music/love.mp3" type="audio/mpeg">
     </audio>
 
-    <section class="gallery">
-      <img src="photos/1.jpg" alt="Our photo 1" loading="lazy" decoding="async" />
-      <img src="photos/2.jpg" alt="Our photo 2" loading="lazy" decoding="async" />
-      <img src="photos/3.jpg" alt="Our photo 3" loading="lazy" decoding="async" />
-      <img src="photos/4.jpg" alt="Our photo 4" loading="lazy" decoding="async" />
-      <img src="photos/5.jpg" alt="Our photo 5" loading="lazy" decoding="async" />
-      <img src="photos/6.jpg" alt="Our photo 6" loading="lazy" decoding="async" />
-      <img src="photos/7.jpg" alt="Our photo 7" loading="lazy" decoding="async" />
-      <img src="photos/8.jpg" alt="Our photo 8" loading="lazy" decoding="async" />
-      <img src="photos/9.jpg" alt="Our photo 9" loading="lazy" decoding="async" />
-      <img src="photos/10.jpg" alt="Our photo 10" loading="lazy" decoding="async" />
-      <img src="photos/11.jpg" alt="Our photo 11" loading="lazy" decoding="async" />
-    </section>
+    <!-- ✅ Gallery created by JS (works even if file is JPG/jpeg/png) -->
+    <section class="gallery" id="gallery"></section>
 
     <p class="tiny">🤍🌹</p>
   </main>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    // ===== Robust gallery loader =====
+    const gallery = document.getElementById("gallery");
+    const exts = ["jpg","JPG","jpeg","JPEG","png","PNG"];
+
+    function createImg(n){
+      const img = document.createElement("img");
+      img.alt = "Our photo " + n;
+      img.loading = "lazy";
+      img.decoding = "async";
+
+      let i = 0;
+      function tryNext(){
+        if (i >= exts.length) return;
+        img.src = `photos/${n}.${exts[i++]}`;
+      }
+      img.onerror = tryNext;
+      tryNext();
+
+      return img;
+    }
+
+    // change 11 to your max photo number
+    for(let n=1; n<=11; n++){
+      gallery.appendChild(createImg(n));
+    }
+  </script>
+
   <script src="script.js"></script>
 </body>
 </html>
