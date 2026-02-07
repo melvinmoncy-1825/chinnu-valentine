@@ -1,17 +1,21 @@
 :root{
-  --bgSky1:#bfe9ff;
-  --bgSky2:#ffffff;
-  --bgPink:#fff0f5;
+ :root{
+  /* Ocean background */
+  --bgSky1:#8fe6ff;      /* light aqua sky */
+  --bgSky2:#e8fbff;      /* soft mist */
+  --bgPink:#d7fff2;      /* sea-foam instead of pink */
 
-  --card:#ffffff;
-  --text:#222;
-  --muted:#555;
+  /* UI colors */
+  --card:#ffffff;        /* keep white for readable text */
+  --text:#06202a;        /* deep navy text */
+  --muted:#214b5a;
 
-  --red:#ff3b6b;
-  --red2:#ff7aa2;
+  /* Ocean accents (replaces red) */
+  --red:#0077b6;         /* ocean blue */
+  --red2:#00b4d8;        /* bright aqua */
 
-  --border:rgba(0,0,0,.12);
-  --shadow: 0 10px 0 rgba(0,0,0,.12);
+  --border:rgba(6,32,42,.14);
+  --shadow: 0 10px 0 rgba(6,32,42,.12);
   --radius: 26px;
 }
 
@@ -22,7 +26,11 @@ body{
   min-height:100vh;
   font-family: ui-rounded, "Comic Neue", "Baloo 2", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color:var(--text);
-  background: linear-gradient(var(--bgSky1), var(--bgSky2) 55%, var(--bgPink));
+  background:
+  radial-gradient(circle at 18% 18%, rgba(0,180,216,.25) 0%, transparent 45%),
+  radial-gradient(circle at 82% 22%, rgba(0,119,182,.18) 0%, transparent 48%),
+  radial-gradient(circle at 40% 92%, rgba(215,255,242,.75) 0%, transparent 55%),
+  linear-gradient(var(--bgSky1), var(--bgSky2) 55%, var(--bgPink));
   overflow-x: hidden;
   display:grid;
   place-items:center;
