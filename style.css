@@ -307,6 +307,7 @@ h1{
 
 .envelope{
   position: relative;
+  overflow: hidden;   /* ✅ hide paper when closed */
   width: 320px;
   height: 210px;
   margin: 0 auto;
@@ -338,7 +339,7 @@ h1{
   border: 3px solid var(--border);
   border-radius: 16px;
 
-  transform: translateY(120px);  /* ✅ hidden inside */
+  transform: translateY(140px);  /* ✅ hidden inside */
   transition: transform .55s ease;
 
   display:flex;
