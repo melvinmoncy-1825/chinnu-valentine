@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Open a Gift 🎁</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="sky" aria-hidden="true">
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="cloud c3"></div>
+  </div>
+
+  <div id="flowers" aria-hidden="true"></div>
+
+  <main class="card">
+    <div class="topbar">
+      <a class="link" href="index.html">← Back</a>
+      <h1>Pick a Gift 🎁</h1>
+      <span></span>
+    </div>
+
+    <p class="subtitle">Tap one box… only one has the secret 😄</p>
+
+    <div class="gifts" id="gifts">
+      <button class="gift" data-g="1" type="button">
+        <div class="gift-box">🎁</div>
+        <div class="gift-label">Gift 1</div>
+      </button>
+      <button class="gift" data-g="2" type="button">
+        <div class="gift-box">🎁</div>
+        <div class="gift-label">Gift 2</div>
+      </button>
+      <button class="gift" data-g="3" type="button">
+        <div class="gift-box">🎁</div>
+        <div class="gift-label">Gift 3</div>
+      </button>
+    </div>
+
+    <div class="gift-result" id="giftResult" hidden>
+      <h2 id="giftTitle">💝</h2>
+      <p id="giftText" class="subtitle"></p>
+      <button class="btn" id="giftAgain" type="button">Try again ✨</button>
+    </div>
+
+    <p class="tiny">Hint: all gifts are from my heart 🤍</p>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>

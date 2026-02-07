@@ -34,6 +34,14 @@
 
     <!-- ✅ Gallery created by JS (works even if file is JPG/jpeg/png) -->
     <section class="gallery" id="gallery"></section>
+    <!-- Lightbox -->
+   <div class="lightbox" id="lightbox" aria-hidden="true">
+   <div class="lightbox-backdrop" id="lbClose"></div>
+   <button class="lb-btn lb-x" id="lbX" type="button" aria-label="Close">×</button>
+   <button class="lb-btn lb-prev" id="lbPrev" type="button" aria-label="Previous">‹</button>
+   <img class="lb-img" id="lbImg" alt="Memory" />
+   <button class="lb-btn lb-next" id="lbNext" type="button" aria-label="Next">›</button>
+   </div>
 
     <p class="tiny">🤍🌹</p>
   </main>
@@ -41,32 +49,46 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script>
-    // ===== Robust gallery loader =====
-    const gallery = document.getElementById("gallery");
-    const exts = ["jpg","JPG","jpeg","JPEG","png","PNG"];
+  const gallery = document.getElementById("gallery");
+  const exts = ["jpg","JPG","jpeg","JPEG","png","PNG"];
+  const imageSrcs = [];
 
-    function createImg(n){
-      const img = document.createElement("img");
-      img.alt = "Our photo " + n;
-      img.loading = "lazy";
-      img.decoding = "async";
+  function resolveSrc(n, onDone){
+    let i = 0;
+    const img = new Image();
+    const tryNext = () => {
+      if (i >= exts.length) { onDone(null); return; }
+      img.src = `photos/${n}.${exts[i++]}`;
+    };
+    img.onload = () => onDone(img.src);
+    img.onerror = tryNext;
+    tryNext();
+  }
 
-      let i = 0;
-      function tryNext(){
-        if (i >= exts.length) return;
-        img.src = `photos/${n}.${exts[i++]}`;
+  function addThumb(n, src){
+    const img = document.createElement("img");
+    img.alt = "Our photo " + n;
+    img.loading = "lazy";
+    img.decoding = "async";
+    img.src = src;
+    img.dataset.index = imageSrcs.length;
+    imageSrcs.push(src);
+    gallery.appendChild(img);
+  }
+
+  const MAX = 11; // change if more
+  let loaded = 0;
+
+  for(let n=1; n<=MAX; n++){
+    resolveSrc(n, (src) => {
+      loaded++;
+      if (src) addThumb(n, src);
+      if (loaded === MAX) {
+        window.__galleryImages = imageSrcs; // used by script.js lightbox
       }
-      img.onerror = tryNext;
-      tryNext();
-
-      return img;
-    }
-
-    // change 11 to your max photo number
-    for(let n=1; n<=11; n++){
-      gallery.appendChild(createImg(n));
-    }
-  </script>
+    });
+  }
+</script>
 
   <script src="script.js"></script>
 </body>
