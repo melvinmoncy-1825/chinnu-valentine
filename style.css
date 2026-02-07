@@ -434,3 +434,7 @@ h1{
   cursor: pointer;
   box-shadow: 0 8px 0 rgba(0,0,0,.10);
 }
+#musicBtn{
+  max-width: 260px;
+  margin: 8px auto 14px;
+}

@@ -144,3 +144,54 @@ if (musicToggle && bgMusic) {
     if (e.key === "Escape") closeEnvelopeModal();
   });
 });
+// ===== Music (works on Android + iPhone) =====
+const bgMusic = document.getElementById("bgMusic");
+const musicBtn = document.getElementById("musicBtn");
+
+function updateMusicBtn() {
+  if (!musicBtn || !bgMusic) return;
+  musicBtn.textContent = bgMusic.paused ? "▶️ Play music" : "🔇 Stop music";
+}
+
+async function startMusic() {
+  if (!bgMusic) return;
+  try {
+    bgMusic.volume = 0.8;
+    await bgMusic.play();               // requires user gesture on phones
+    localStorage.setItem("playMusic", "yes");
+  } catch (e) {
+    // blocked until a real tap
+  }
+  updateMusicBtn();
+}
+
+function stopMusic() {
+  if (!bgMusic) return;
+  bgMusic.pause();
+  localStorage.setItem("playMusic", "no");
+  updateMusicBtn();
+}
+
+if (musicBtn && bgMusic) {
+  musicBtn.addEventListener("click", () => {
+    if (bgMusic.paused) startMusic();
+    else stopMusic();
+  });
+}
+
+// If user previously enabled music, try again (phones may block until first tap)
+if (bgMusic && localStorage.getItem("playMusic") === "yes") {
+  updateMusicBtn();
+
+  const firstTapStart = () => {
+    startMusic();
+    document.removeEventListener("touchstart", firstTapStart);
+    document.removeEventListener("click", firstTapStart);
+  };
+
+  // First tap anywhere on page will start music
+  document.addEventListener("touchstart", firstTapStart, { once: true });
+  document.addEventListener("click", firstTapStart, { once: true });
+} else {
+  updateMusicBtn();
+}
