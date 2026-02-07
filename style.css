@@ -249,3 +249,15 @@ h1{
   z-index: 3;
 }
 .toast.show{ opacity: 1; }
+@media (max-width: 600px){
+  .gallery{
+    grid-template-columns: 1fr;   /* one photo per row */
+  }
+
+  .gallery img{
+    height: auto;                 /* ✅ no forced crop */
+    object-fit: contain;          /* ✅ show full image */
+    max-height: 520px;            /* prevents huge tall images */
+    background: #fff;             /* looks clean with contain */
+  }
+}
