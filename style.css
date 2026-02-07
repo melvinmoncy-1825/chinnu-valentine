@@ -421,3 +421,16 @@ h1{
   .envelope{ width: 280px; height: 190px; }
   .paper-text{ font-size: 20px; }
 }
+.music-btn{
+  position: fixed;
+  right: 14px;
+  bottom: 14px;
+  z-index: 1000;
+  border: 3px solid var(--border);
+  background: #fff;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 1000;
+  cursor: pointer;
+  box-shadow: 0 8px 0 rgba(0,0,0,.10);
+}

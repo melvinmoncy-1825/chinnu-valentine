@@ -9,6 +9,51 @@ window.addEventListener("DOMContentLoaded", () => {
   const envelope = document.getElementById("envelope");
   const closeBackdrop = document.getElementById("closeEnvelope");
   const closeX = document.getElementById("closeEnvelopeX");
+  // ===== Music for gallery =====
+const memoriesLink = document.getElementById("memoriesLink");
+if (memoriesLink) {
+  memoriesLink.addEventListener("click", () => {
+    localStorage.setItem("playMusic", "yes");
+  });
+}
+
+const bgMusic = document.getElementById("bgMusic");
+const musicToggle = document.getElementById("musicToggle");
+
+function setToggleText(isPlaying){
+  if (!musicToggle) return;
+  musicToggle.textContent = isPlaying ? "🔇 Stop" : "🔊 Music";
+}
+
+if (bgMusic) {
+  const shouldPlay = localStorage.getItem("playMusic") === "yes";
+
+  if (shouldPlay) {
+    bgMusic.play().then(() => {
+      setToggleText(true);
+    }).catch(() => {
+      // autoplay blocked until user taps
+      setToggleText(false);
+    });
+  } else {
+    setToggleText(false);
+  }
+}
+
+if (musicToggle && bgMusic) {
+  musicToggle.addEventListener("click", () => {
+    if (bgMusic.paused) {
+      bgMusic.play().then(() => {
+        localStorage.setItem("playMusic", "yes");
+        setToggleText(true);
+      });
+    } else {
+      bgMusic.pause();
+      localStorage.setItem("playMusic", "no");
+      setToggleText(false);
+    }
+  });
+}
 
   function showToast(msg) {
     if (!toast) return;
