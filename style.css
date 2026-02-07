@@ -339,7 +339,7 @@ h1{
   border: 3px solid var(--border);
   border-radius: 16px;
 
-  transform: translateY(140px);  /* ✅ hidden inside */
+  transform: translateY(500px);  /* ✅ hidden inside */
   transition: transform .55s ease;
 
   display:flex;
