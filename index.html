@@ -7,26 +7,33 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="bg-petals" aria-hidden="true"></div>
+  <div class="sky" aria-hidden="true">
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="cloud c3"></div>
+  </div>
 
-  <main class="card">
+  <div id="flowers" aria-hidden="true"></div>
+
+  <main class="card home">
     <div class="badge">🤍🌹 Valentine’s</div>
 
-    <h1>Hey Chinnu 🤍</h1>
+    <h1 class="title">HEY CHINNU 🤍</h1>
     <p class="subtitle">
-      I made this little website just for you — because you deserve something that’s only yours.
+      ഇത് നിനക്കായി മാത്രം ...
     </p>
 
     <div class="button-grid">
       <a class="btn" href="gallery.html">Our memories 📸</a>
       <a class="btn btn-ghost" href="notes.html">A letter for you 💌</a>
-     <button class="btn" id="surpriseBtn" type="button">Tap for a surprise ✨</button>
-    <div class="footer">
-      <span class="tiny">Made with love — Feb 14 🤍🌹</span>
+      <button class="btn" id="surpriseBtn" type="button">Tap for a surprise ✨</button>
     </div>
+
+    <p class="tiny">Made with love 🤍🌹</p>
   </main>
 
- <div id="toast" class="toast" role="status" aria-live="polite"></div>
-<script src="script.js"></script>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
 </body>
 </html>
