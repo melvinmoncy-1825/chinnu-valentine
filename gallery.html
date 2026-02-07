@@ -23,34 +23,30 @@
     </div>
 
     <p class="subtitle">Some moments I never want to forget.</p>
-    <button class="btn" id="musicBtn" type="button">▶️ Play music</button>
 
-<audio id="bgMusic" loop preload="auto" playsinline>
-  <source src="music/love.mp3" type="audio/mpeg">
-</audio>
+    <!-- ✅ Music control (works on phones after tap) -->
+    <button class="btn" id="musicBtn" type="button">▶️ Play music</button>
+    <audio id="bgMusic" loop preload="metadata" playsinline>
+      <source src="music/love.mp3" type="audio/mpeg">
+    </audio>
 
     <section class="gallery">
-      <img src="photos/1.jpg" alt="Our photo 1" />
-      <img src="photos/2.jpg" alt="Our photo 2" />
-      <img src="photos/3.jpg" alt="Our photo 3" />
-      <img src="photos/4.jpg" alt="Our photo 4" />
-      <img src="photos/5.jpg" alt="Our photo 5" />
-      <img src="photos/6.jpg" alt="Our photo 6" />
-      <img src="photos/7.jpg" alt="Our photo 7" />
-      <img src="photos/8.jpg" alt="Our photo 8" />
-      <img src="photos/9.jpg" alt="Our photo 9" />
-      <img src="photos/10.jpg" alt="Our photo 10" />
-      <img src="photos/11.jpg" alt="Our photo 11" />
+      <img src="photos/1.jpg" alt="Our photo 1" loading="lazy" decoding="async" />
+      <img src="photos/2.jpg" alt="Our photo 2" loading="lazy" decoding="async" />
+      <img src="photos/3.jpg" alt="Our photo 3" loading="lazy" decoding="async" />
+      <img src="photos/4.jpg" alt="Our photo 4" loading="lazy" decoding="async" />
+      <img src="photos/5.jpg" alt="Our photo 5" loading="lazy" decoding="async" />
+      <img src="photos/6.jpg" alt="Our photo 6" loading="lazy" decoding="async" />
+      <img src="photos/7.jpg" alt="Our photo 7" loading="lazy" decoding="async" />
+      <img src="photos/8.jpg" alt="Our photo 8" loading="lazy" decoding="async" />
+      <img src="photos/9.jpg" alt="Our photo 9" loading="lazy" decoding="async" />
+      <img src="photos/10.jpg" alt="Our photo 10" loading="lazy" decoding="async" />
+      <img src="photos/11.jpg" alt="Our photo 11" loading="lazy" decoding="async" />
     </section>
 
     <p class="tiny">🤍🌹</p>
   </main>
 
   <script src="script.js"></script>
-  <audio id="bgMusic" loop preload="auto">
-  <source src="music/love.mp3" type="audio/mpeg">
-</audio>
-
-<button class="music-btn" id="musicToggle" type="button">🔊 Music</button>
 </body>
 </html>
