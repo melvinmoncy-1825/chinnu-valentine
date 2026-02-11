@@ -1,114 +1,86 @@
-window.addEventListener("DOMContentLoaded", () => {
-  // ===== Toast =====
-  const toast = document.getElementById("toast");
-  function showToast(msg) {
-    if (!toast) return;
-    toast.textContent = msg;
-    toast.classList.add("show");
-    setTimeout(() => toast.classList.remove("show"), 2200);
-  }
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Open a Gift 🎁</title>
 
-  // ===== Flowers =====
-  const flowersLayer = document.getElementById("flowers");
-  const flowerEmojis = ["🌸", "🌺", "🌷", "🌹", "💮", "🌼"];
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@400;700;900&display=swap" rel="stylesheet">
 
-  function spawnFlower() {
-    if (!flowersLayer) return;
-    const el = document.createElement("div");
-    el.className = "flower";
-    el.textContent = flowerEmojis[Math.floor(Math.random() * flowerEmojis.length)];
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="sky" aria-hidden="true">
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="cloud c3"></div>
+  </div>
 
-    const left = Math.random() * 100;
-    const size = 18 + Math.random() * 22;
-    const fallDuration = 7 + Math.random() * 7;
-    const swayDuration = 2 + Math.random() * 3;
+  <div id="flowers" aria-hidden="true"></div>
 
-    el.style.left = left + "vw";
-    el.style.fontSize = size + "px";
-    el.style.opacity = (0.6 + Math.random() * 0.4).toFixed(2);
-    el.style.animationDuration = `${fallDuration}s, ${swayDuration}s`;
+  <main class="card">
+    <div class="topbar">
+      <a class="link" href="index.html">← Back</a>
+      <h1>Pick a Gift 🎁</h1>
+      <span></span>
+    </div>
 
-    flowersLayer.appendChild(el);
-    setTimeout(() => el.remove(), (fallDuration + 0.5) * 1000);
-  }
+    <p class="subtitle">Choose one… only <b>Gift 3</b> has the surprise 😄</p>
 
-  function burstFlowers(count = 50) {
-    for (let i = 0; i < count; i++) spawnFlower();
-  }
+    <div class="gifts" id="gifts">
+      <button class="gift" data-g="1" type="button">
+        <div class="gift-box">🎁</div>
+        <div class="gift-label">Gift 1</div>
+      </button>
 
-  for (let i = 0; i < 8; i++) spawnFlower();
-  setInterval(spawnFlower, 1100);
+      <button class="gift" data-g="2" type="button">
+        <div class="gift-box">🎁</div>
+        <div class="gift-label">Gift 2</div>
+      </button>
 
-  // ===== Gift Game (Gift 3 ONLY) =====
-  const giftsWrap = document.getElementById("gifts");
-  const giftResult = document.getElementById("giftResult");
-  const giftTitle = document.getElementById("giftTitle");
-  const giftText = document.getElementById("giftText");
-  const giftAgain = document.getElementById("giftAgain");
-  const openGiftSurprise = document.getElementById("openGiftSurprise");
+      <button class="gift gift-special" data-g="3" type="button">
+        <div class="gift-box">🎁</div>
+        <div class="gift-label">Gift 3 ✨</div>
+      </button>
+    </div>
 
-  function resetGiftUI() {
-    if (giftResult) giftResult.hidden = true;
-    if (giftsWrap) giftsWrap.style.display = "grid";
-    if (openGiftSurprise) openGiftSurprise.hidden = true; // ✅ always hidden unless gift 3
-  }
+    <div class="gift-result" id="giftResult" hidden>
+      <h2 id="giftTitle">💝</h2>
+      <p id="giftText" class="subtitle"></p>
 
-  if (giftsWrap && giftResult && giftTitle && giftText && giftAgain) {
-    const winning = 3;
+      <!-- ONLY for Gift 3 -->
+      <button class="btn" id="openGiftSurprise" type="button" hidden>Open Surprise 💌</button>
 
-    giftsWrap.addEventListener("click", (e) => {
-      const b = e.target.closest(".gift");
-      if (!b) return;
+      <div style="height:10px"></div>
+      <button class="btn btn-ghost" id="giftAgain" type="button">Try again ✨</button>
+    </div>
 
-      const pick = Number(b.dataset.g);
+    <p class="tiny">🤍🌹</p>
+  </main>
 
-      giftResult.hidden = false;
-      giftsWrap.style.display = "none";
+  <!-- Envelope Popup -->
+  <div class="modal" id="giftEnvelopeModal" aria-hidden="true">
+    <div class="modal-backdrop" id="closeGiftEnvelope"></div>
 
-      if (pick === winning) {
-        burstFlowers(90);
-        giftTitle.textContent = "💖 You found it!";
-        giftText.textContent = "കുഞ്ഞേ… ഇതാ നിനക്കായി ഒരു സർപ്രൈസ് 💌";
-        if (openGiftSurprise) openGiftSurprise.hidden = false; // ✅ only here
-        showToast("Open the surprise 💝");
-      } else {
-        giftTitle.textContent = "😄 Not this one!";
-        giftText.textContent = "ഇത് അല്ല കുഞ്ഞേ… വീണ്ടും ശ്രമിക്കൂ 😄🎁";
-        if (openGiftSurprise) openGiftSurprise.hidden = true;  // ✅ hide for gift 1 & 2
-        showToast("Try again 😄");
-      }
-    });
+    <div class="modal-card">
+      <button class="modal-x" id="closeGiftEnvelopeX" type="button">×</button>
 
-    giftAgain.addEventListener("click", resetGiftUI);
-  }
+      <div class="envelope" id="giftEnvelope">
+        <div class="env-top"></div>
+        <div class="env-paper">
+          <div class="env-text">I LOVE YOU BABY 🤍🌹</div>
+        </div>
+        <div class="env-bottom"></div>
+        <div class="env-seal">💗</div>
+      </div>
 
-  // ===== Envelope Popup (Gift page) =====
-  const giftEnvelopeModal = document.getElementById("giftEnvelopeModal");
-  const giftEnvelope = document.getElementById("giftEnvelope");
-  const closeGiftBackdrop = document.getElementById("closeGiftEnvelope");
-  const closeGiftX = document.getElementById("closeGiftEnvelopeX");
+      <p class="tiny center">Tap the envelope 💌</p>
+    </div>
+  </div>
 
-  function openGiftEnvelopeModal() {
-    if (!giftEnvelopeModal) return;
-    giftEnvelopeModal.classList.add("show");
-    giftEnvelopeModal.setAttribute("aria-hidden", "false");
-    if (giftEnvelope) giftEnvelope.classList.remove("open");
-    burstFlowers(80);
-    showToast("I LOVE YOU BABY 🤍🌹");
-  }
-
-  function closeGiftEnvelopeModal() {
-    if (!giftEnvelopeModal) return;
-    giftEnvelopeModal.classList.remove("show");
-    giftEnvelopeModal.setAttribute("aria-hidden", "true");
-  }
-
-  if (openGiftSurprise) openGiftSurprise.addEventListener("click", openGiftEnvelopeModal);
-  if (giftEnvelope) giftEnvelope.addEventListener("click", () => giftEnvelope.classList.toggle("open"));
-  if (closeGiftBackdrop) closeGiftBackdrop.addEventListener("click", closeGiftEnvelopeModal);
-  if (closeGiftX) closeGiftX.addEventListener("click", closeGiftEnvelopeModal);
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeGiftEnvelopeModal();
-  });
-});
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
