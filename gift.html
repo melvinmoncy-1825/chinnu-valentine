@@ -48,7 +48,7 @@
       <h2 id="giftTitle">💝</h2>
       <p id="giftText" class="subtitle"></p>
 
-      <!-- ✅ This appears ONLY when she wins -->
+      <!-- Shows ONLY when she wins -->
       <button class="btn" id="openGiftSurprise" type="button" hidden>Open Surprise 💌</button>
 
       <div style="height:10px"></div>
@@ -58,24 +58,23 @@
     <p class="tiny">🤍🌹</p>
   </main>
 
-  <!-- ✅ Envelope Modal (Gift Page) -->
+  <!-- ✅ POPUP ENVELOPE MODAL (THIS IS THE IMPORTANT PART) -->
   <div class="modal" id="giftEnvelopeModal" aria-hidden="true">
     <div class="modal-backdrop" id="closeGiftEnvelope"></div>
 
-    <div class="envelope-wrap">
+    <div class="modal-card">
       <button class="modal-x" id="closeGiftEnvelopeX" type="button">×</button>
 
-      <div class="envelope" id="giftEnvelope" aria-label="Envelope">
-        <div class="env-back"></div>
+      <div class="envelope" id="giftEnvelope">
+        <div class="env-top"></div>
         <div class="env-paper">
-          <div class="paper-text">I LOVE YOU BABY 🤍🌹</div>
+          <div class="env-text">I LOVE YOU BABY 🤍🌹</div>
         </div>
-        <div class="env-front"></div>
-        <div class="env-flap"></div>
-        <div class="env-heart">💗</div>
+        <div class="env-bottom"></div>
+        <div class="env-seal">💗</div>
       </div>
 
-      <p class="hint">Tap the envelope 💌</p>
+      <p class="tiny center">Tap the envelope 💌</p>
     </div>
   </div>
 
