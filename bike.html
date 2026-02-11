@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bike 🏍️</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="sky" aria-hidden="true">
+    <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+  </div>
+
+  <div id="flowers" aria-hidden="true"></div>
+
+  <main class="card wide">
+    <div class="topbar">
+      <a class="link" href="story.html">← Back</a>
+      <h1>ആദ്യ ബൈക്ക് റൈഡ് 🏍️</h1>
+      <span></span>
+    </div>
+
+    <p class="subtitle">കാറ്റും വഴികളും… നീയും ഞാനും… 🤍</p>
+
+    <section class="gallery" id="gallery"></section>
+
+    <p class="tiny">Put photos in: <b>memories/bike/</b> as <b>1.jpg, 2.jpg, 3.jpg…</b></p>
+  </main>
+
+  <script>
+    const gallery = document.getElementById("gallery");
+    const exts = ["jpg","JPG","jpeg","JPEG","png","PNG"];
+    const MAX = 30; // change if you want
+
+    function tryLoad(n){
+      const img = document.createElement("img");
+      img.alt = "Bike photo " + n;
+      img.loading = "lazy";
+      img.decoding = "async";
+
+      let i = 0;
+      const next = () => {
+        if(i >= exts.length){ img.remove(); return; }
+        img.src = `memories/bike/${n}.${exts[i++]}`;
+      };
+      img.onerror = next;
+      next();
+
+      gallery.appendChild(img);
+    }
+
+    for(let n=1; n<=MAX; n++) tryLoad(n);
+  </script>
+
+  <script src="script.js"></script>
+</body>
+</html>
