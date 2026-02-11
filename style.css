@@ -589,3 +589,53 @@ h1{
   .gifts{ grid-template-columns: 1fr; }
   .lb-btn{ width: 44px; height: 44px; }
 }
+/* ===== Memory cards (Story page) ===== */
+.memories-menu{
+  display:grid;
+  gap:14px;
+  margin-top: 14px;
+}
+
+.memory-card{
+  display:grid;
+  grid-template-columns: 64px 1fr auto;
+  gap: 12px;
+  align-items:center;
+  text-decoration:none;
+  color: var(--text);
+  border: 3px solid var(--border);
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.82));
+  box-shadow: 0 8px 0 rgba(0,0,0,.08);
+  padding: 14px;
+  transition: transform .12s ease;
+}
+.memory-card:hover{ transform: translateY(-2px); }
+.memory-card:active{ transform: translateY(2px); }
+
+.memory-emoji{
+  width: 54px;
+  height: 54px;
+  display:grid;
+  place-items:center;
+  font-size: 28px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--red2), var(--red));
+  color:#fff;
+  border: 3px solid rgba(0,0,0,.10);
+}
+
+.memory-title{
+  font-weight: 1000;
+  color: var(--red2);
+  margin-bottom: 4px;
+}
+.memory-sub{
+  font-weight: 700;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.memory-go{
+  font-weight: 1000;
+  color: var(--red2);
+}
