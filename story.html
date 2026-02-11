@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Our Story 🤍</title>
+  <title>നമ്മുടെ ഓർമ്മകൾ 🤍</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,12 +48,12 @@
         <div class="memory-go">Open →</div>
       </a>
 
-      <!-- ✅ SECRET (password 1825) -->
+      <!-- ✅ SECRET (opens keypad modal) -->
       <a class="memory-card" href="#" id="secretPortalBtn">
         <div class="memory-emoji">🔒</div>
         <div>
           <div class="memory-title">Secret</div>
-          <div class="memory-sub">Only for my കുഞ്ഞ് 🤍 (Password required)</div>
+          <div class="memory-sub">Only for my കുഞ്ഞ് 🤍</div>
         </div>
         <div class="memory-go">Open →</div>
       </a>
@@ -63,6 +63,42 @@
   </main>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- ✅ Secret Keypad Modal -->
+  <div class="kmodal" id="keypadModal" aria-hidden="true">
+    <div class="kmodal-backdrop" id="keypadClose"></div>
+
+    <div class="kmodal-card" role="dialog" aria-modal="true" aria-label="Secret Keypad">
+      <button class="kmodal-x" id="keypadCloseX" type="button" aria-label="Close">×</button>
+
+      <div class="kmodal-title">Secret 🔒</div>
+      <div class="kmodal-sub">Password enter ചെയ്യൂ കുഞ്ഞേ 🤍</div>
+
+      <div class="kdisplay" id="kdisplay">••••</div>
+      <div class="kerror" id="kerror" hidden>Wrong password 😄</div>
+
+      <div class="keypad" id="keypad">
+        <button class="kbtn" data-k="1" type="button">1</button>
+        <button class="kbtn" data-k="2" type="button">2</button>
+        <button class="kbtn" data-k="3" type="button">3</button>
+
+        <button class="kbtn" data-k="4" type="button">4</button>
+        <button class="kbtn" data-k="5" type="button">5</button>
+        <button class="kbtn" data-k="6" type="button">6</button>
+
+        <button class="kbtn" data-k="7" type="button">7</button>
+        <button class="kbtn" data-k="8" type="button">8</button>
+        <button class="kbtn" data-k="9" type="button">9</button>
+
+        <button class="kbtn kbtn-soft" data-act="clear" type="button">Clear</button>
+        <button class="kbtn" data-k="0" type="button">0</button>
+        <button class="kbtn kbtn-soft" data-act="back" type="button">⌫</button>
+      </div>
+
+      <button class="btn" id="kunlock" type="button">Unlock 🔓</button>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>

@@ -21,7 +21,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
   function spawnFlower() {
     if (!flowersLayer) return;
-
     const el = document.createElement("div");
     el.className = "flower";
     el.textContent = flowerEmojis[Math.floor(Math.random() * flowerEmojis.length)];
@@ -64,11 +63,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   if (surpriseBtn) surpriseBtn.addEventListener("click", openEnvelopeModal);
-
-  if (envelope) {
-    envelope.addEventListener("click", () => envelope.classList.toggle("open"));
-  }
-
+  if (envelope) envelope.addEventListener("click", () => envelope.classList.toggle("open"));
   if (closeBackdrop) closeBackdrop.addEventListener("click", closeEnvelopeModal);
   if (closeX) closeX.addEventListener("click", closeEnvelopeModal);
 
@@ -121,21 +116,107 @@ window.addEventListener("DOMContentLoaded", () => {
     bgMusic.addEventListener("pause", setMusicButtonText);
   }
 
-  // ===== SECRET password on story page =====
+  // ===== Secret Keypad (story.html) =====
   const secretPortalBtn = document.getElementById("secretPortalBtn");
+  const keypadModal = document.getElementById("keypadModal");
+  const keypadClose = document.getElementById("keypadClose");
+  const keypadCloseX = document.getElementById("keypadCloseX");
+  const keypad = document.getElementById("keypad");
+  const kdisplay = document.getElementById("kdisplay");
+  const kunlock = document.getElementById("kunlock");
+  const kerror = document.getElementById("kerror");
+
+  let entered = "";
+
+  function renderDots() {
+    if (!kdisplay) return;
+    const dots = "•".repeat(Math.min(entered.length, 4));
+    kdisplay.textContent = (dots + "••••").slice(0, 4);
+  }
+
+  function openKeypad() {
+    if (!keypadModal) return;
+    entered = "";
+    renderDots();
+    if (kerror) kerror.hidden = true;
+    keypadModal.classList.add("show");
+    keypadModal.setAttribute("aria-hidden", "false");
+  }
+
+  function closeKeypad() {
+    if (!keypadModal) return;
+    keypadModal.classList.remove("show");
+    keypadModal.setAttribute("aria-hidden", "true");
+  }
+
+  function wrong() {
+    if (kerror) kerror.hidden = false;
+    if (keypadModal) {
+      const card = keypadModal.querySelector(".kmodal-card");
+      if (card) {
+        card.classList.remove("kshake");
+        void card.offsetWidth;
+        card.classList.add("kshake");
+      }
+    }
+    entered = "";
+    renderDots();
+  }
+
+  function tryUnlock() {
+    if (entered === "1825") {
+      closeKeypad();
+      window.location.href = "secret.html";
+    } else {
+      wrong();
+      showToast("Wrong password 😄");
+    }
+  }
 
   if (secretPortalBtn) {
     secretPortalBtn.addEventListener("click", (e) => {
       e.preventDefault();
+      openKeypad();
+    });
+  }
 
-      const pass = prompt("Enter password 🔒");
-      if (pass === null) return;
+  if (keypadClose) keypadClose.addEventListener("click", closeKeypad);
+  if (keypadCloseX) keypadCloseX.addEventListener("click", closeKeypad);
 
-      if (pass.trim() === "1825") {
-        window.location.href = "secret.html";
-      } else {
-        showToast("Wrong password 😄");
+  if (keypad) {
+    keypad.addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if (!btn) return;
+
+      const digit = btn.dataset.k;
+      const act = btn.dataset.act;
+
+      if (act === "clear") {
+        entered = "";
+        if (kerror) kerror.hidden = true;
+        renderDots();
+        return;
+      }
+      if (act === "back") {
+        entered = entered.slice(0, -1);
+        if (kerror) kerror.hidden = true;
+        renderDots();
+        return;
+      }
+
+      if (digit && entered.length < 4) {
+        entered += digit;
+        if (kerror) kerror.hidden = true;
+        renderDots();
+        if (entered.length === 4) tryUnlock();
       }
     });
   }
+
+  if (kunlock) kunlock.addEventListener("click", tryUnlock);
+
+  document.addEventListener("keydown", (e) => {
+    if (!keypadModal || !keypadModal.classList.contains("show")) return;
+    if (e.key === "Escape") closeKeypad();
+  });
 });
