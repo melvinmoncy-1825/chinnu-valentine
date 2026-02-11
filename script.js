@@ -1,13 +1,7 @@
 window.addEventListener("DOMContentLoaded", () => {
-  // ===== Common elements =====
+  // ===== Common =====
   const flowersLayer = document.getElementById("flowers");
   const toast = document.getElementById("toast");
-
-  const surpriseBtn = document.getElementById("surpriseBtn");
-  const modal = document.getElementById("envelopeModal");
-  const envelope = document.getElementById("envelope");
-  const closeBackdrop = document.getElementById("closeEnvelope");
-  const closeX = document.getElementById("closeEnvelopeX");
 
   function showToast(msg) {
     if (!toast) return;
@@ -46,7 +40,13 @@ window.addEventListener("DOMContentLoaded", () => {
   for (let i = 0; i < 8; i++) spawnFlower();
   setInterval(spawnFlower, 1100);
 
-  // ===== Envelope modal (index only) =====
+  // ===== Envelope modal (INDEX page: existing) =====
+  const surpriseBtn = document.getElementById("surpriseBtn");
+  const modal = document.getElementById("envelopeModal");
+  const envelope = document.getElementById("envelope");
+  const closeBackdrop = document.getElementById("closeEnvelope");
+  const closeX = document.getElementById("closeEnvelopeX");
+
   function openEnvelopeModal() {
     if (!modal) return;
     modal.classList.add("show");
@@ -67,8 +67,39 @@ window.addEventListener("DOMContentLoaded", () => {
   if (closeBackdrop) closeBackdrop.addEventListener("click", closeEnvelopeModal);
   if (closeX) closeX.addEventListener("click", closeEnvelopeModal);
 
+  // ===== Envelope modal (GIFT page: NEW) =====
+  const giftEnvelopeModal = document.getElementById("giftEnvelopeModal");
+  const giftEnvelope = document.getElementById("giftEnvelope");
+  const closeGiftBackdrop = document.getElementById("closeGiftEnvelope");
+  const closeGiftX = document.getElementById("closeGiftEnvelopeX");
+  const openGiftSurprise = document.getElementById("openGiftSurprise");
+
+  function openGiftEnvelopeModal() {
+    if (!giftEnvelopeModal) return;
+    giftEnvelopeModal.classList.add("show");
+    giftEnvelopeModal.setAttribute("aria-hidden", "false");
+    if (giftEnvelope) giftEnvelope.classList.remove("open");
+    burstFlowers(70);
+    showToast("I LOVE YOU BABY 🤍🌹");
+  }
+
+  function closeGiftEnvelopeModal() {
+    if (!giftEnvelopeModal) return;
+    giftEnvelopeModal.classList.remove("show");
+    giftEnvelopeModal.setAttribute("aria-hidden", "true");
+  }
+
+  if (openGiftSurprise) openGiftSurprise.addEventListener("click", openGiftEnvelopeModal);
+  if (giftEnvelope) giftEnvelope.addEventListener("click", () => giftEnvelope.classList.toggle("open"));
+  if (closeGiftBackdrop) closeGiftBackdrop.addEventListener("click", closeGiftEnvelopeModal);
+  if (closeGiftX) closeGiftX.addEventListener("click", closeGiftEnvelopeModal);
+
+  // Escape closes any modal
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeEnvelopeModal();
+    if (e.key !== "Escape") return;
+    closeEnvelopeModal();
+    closeGiftEnvelopeModal();
+    closeKeypad();
   });
 
   // ===== MUSIC (gallery only - stable) =====
@@ -114,6 +145,49 @@ window.addEventListener("DOMContentLoaded", () => {
     });
     bgMusic.addEventListener("play", setMusicButtonText);
     bgMusic.addEventListener("pause", setMusicButtonText);
+  }
+
+  // ===== Gift game logic (gift.html) =====
+  const giftsWrap = document.getElementById("gifts");
+  const giftResult = document.getElementById("giftResult");
+  const giftTitle = document.getElementById("giftTitle");
+  const giftText = document.getElementById("giftText");
+  const giftAgain = document.getElementById("giftAgain");
+
+  if (giftsWrap && giftResult && giftTitle && giftText && giftAgain) {
+    let winning = Math.floor(Math.random() * 3) + 1;
+
+    function reveal(isWin) {
+      giftResult.hidden = false;
+      giftsWrap.style.display = "none";
+
+      if (isWin) {
+        burstFlowers(80);
+        giftTitle.textContent = "💖 Surprise!";
+        giftText.textContent = "കുഞ്ഞേ… ഇതാ നിനക്കായി ഒരു സർപ്രൈസ് 💌";
+        if (openGiftSurprise) openGiftSurprise.hidden = false;
+        showToast("You found it 💝");
+      } else {
+        giftTitle.textContent = "😄 Almost!";
+        giftText.textContent = "വീണ്ടും ശ്രമിക്കൂ… നിന്റെ സർപ്രൈസ് കാത്തിരിക്കുന്നു 🎁";
+        if (openGiftSurprise) openGiftSurprise.hidden = true;
+        showToast("Try again 😄");
+      }
+    }
+
+    giftsWrap.addEventListener("click", (e) => {
+      const b = e.target.closest(".gift");
+      if (!b) return;
+      const pick = Number(b.dataset.g);
+      reveal(pick === winning);
+    });
+
+    giftAgain.addEventListener("click", () => {
+      winning = Math.floor(Math.random() * 3) + 1;
+      giftResult.hidden = true;
+      giftsWrap.style.display = "grid";
+      if (openGiftSurprise) openGiftSurprise.hidden = true;
+    });
   }
 
   // ===== Secret Keypad (story.html) =====
@@ -214,9 +288,4 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   if (kunlock) kunlock.addEventListener("click", tryUnlock);
-
-  document.addEventListener("keydown", (e) => {
-    if (!keypadModal || !keypadModal.classList.contains("show")) return;
-    if (e.key === "Escape") closeKeypad();
-  });
 });
