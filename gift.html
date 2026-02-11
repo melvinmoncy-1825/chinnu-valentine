@@ -27,20 +27,22 @@
       <span></span>
     </div>
 
-    <p class="subtitle">Tap one box… only one has the secret 😄</p>
+    <p class="subtitle">Choose one… only Gift 3 has the surprise 😄</p>
 
     <div class="gifts" id="gifts">
       <button class="gift" data-g="1" type="button">
         <div class="gift-box">🎁</div>
         <div class="gift-label">Gift 1</div>
       </button>
+
       <button class="gift" data-g="2" type="button">
         <div class="gift-box">🎁</div>
         <div class="gift-label">Gift 2</div>
       </button>
-      <button class="gift" data-g="3" type="button">
+
+      <button class="gift gift-special" data-g="3" type="button">
         <div class="gift-box">🎁</div>
-        <div class="gift-label">Gift 3</div>
+        <div class="gift-label">Gift 3 ✨</div>
       </button>
     </div>
 
@@ -48,7 +50,7 @@
       <h2 id="giftTitle">💝</h2>
       <p id="giftText" class="subtitle"></p>
 
-      <!-- Shows ONLY when she wins -->
+      <!-- ✅ ONLY shown after Gift 3 -->
       <button class="btn" id="openGiftSurprise" type="button" hidden>Open Surprise 💌</button>
 
       <div style="height:10px"></div>
@@ -58,7 +60,7 @@
     <p class="tiny">🤍🌹</p>
   </main>
 
-  <!-- ✅ POPUP ENVELOPE MODAL (THIS IS THE IMPORTANT PART) -->
+  <!-- ✅ Envelope Popup -->
   <div class="modal" id="giftEnvelopeModal" aria-hidden="true">
     <div class="modal-backdrop" id="closeGiftEnvelope"></div>
 

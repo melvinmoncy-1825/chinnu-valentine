@@ -1,7 +1,6 @@
 window.addEventListener("DOMContentLoaded", () => {
-  const flowersLayer = document.getElementById("flowers");
+  // ===== Toast =====
   const toast = document.getElementById("toast");
-
   function showToast(msg) {
     if (!toast) return;
     toast.textContent = msg;
@@ -10,6 +9,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   // ===== Flowers =====
+  const flowersLayer = document.getElementById("flowers");
   const flowerEmojis = ["🌸", "🌺", "🌷", "🌹", "💮", "🌼"];
 
   function spawnFlower() {
@@ -39,7 +39,7 @@ window.addEventListener("DOMContentLoaded", () => {
   for (let i = 0; i < 8; i++) spawnFlower();
   setInterval(spawnFlower, 1100);
 
-  // ===== Gift game =====
+  // ===== Gift Game (Gift 3 ONLY) =====
   const giftsWrap = document.getElementById("gifts");
   const giftResult = document.getElementById("giftResult");
   const giftTitle = document.getElementById("giftTitle");
@@ -47,43 +47,42 @@ window.addEventListener("DOMContentLoaded", () => {
   const giftAgain = document.getElementById("giftAgain");
   const openGiftSurprise = document.getElementById("openGiftSurprise");
 
+  function resetGiftUI() {
+    if (giftResult) giftResult.hidden = true;
+    if (giftsWrap) giftsWrap.style.display = "grid";
+    if (openGiftSurprise) openGiftSurprise.hidden = true; // ✅ always hidden unless gift 3
+  }
+
   if (giftsWrap && giftResult && giftTitle && giftText && giftAgain) {
-    let winning = Math.floor(Math.random() * 3) + 1;
-
-    function reveal(isWin) {
-      giftResult.hidden = false;
-      giftsWrap.style.display = "none";
-
-      if (isWin) {
-        burstFlowers(90);
-        giftTitle.textContent = "💖 You found it!";
-        giftText.textContent = "കുഞ്ഞേ… ഇതാ നിനക്കായി ഒരു സർപ്രൈസ് 💌";
-        if (openGiftSurprise) openGiftSurprise.hidden = false;
-        showToast("Now open the surprise 💝");
-      } else {
-        giftTitle.textContent = "😄 Almost!";
-        giftText.textContent = "വീണ്ടും ശ്രമിക്കൂ… നിന്റെ സർപ്രൈസ് കാത്തിരിക്കുന്നു 🎁";
-        if (openGiftSurprise) openGiftSurprise.hidden = true;
-        showToast("Try again 😄");
-      }
-    }
+    const winning = 3;
 
     giftsWrap.addEventListener("click", (e) => {
       const b = e.target.closest(".gift");
       if (!b) return;
+
       const pick = Number(b.dataset.g);
-      reveal(pick === winning);
+
+      giftResult.hidden = false;
+      giftsWrap.style.display = "none";
+
+      if (pick === winning) {
+        burstFlowers(90);
+        giftTitle.textContent = "💖 You found it!";
+        giftText.textContent = "കുഞ്ഞേ… ഇതാ നിനക്കായി ഒരു സർപ്രൈസ് 💌";
+        if (openGiftSurprise) openGiftSurprise.hidden = false; // ✅ only here
+        showToast("Open the surprise 💝");
+      } else {
+        giftTitle.textContent = "😄 Not this one!";
+        giftText.textContent = "ഇത് അല്ല കുഞ്ഞേ… വീണ്ടും ശ്രമിക്കൂ 😄🎁";
+        if (openGiftSurprise) openGiftSurprise.hidden = true;  // ✅ hide for gift 1 & 2
+        showToast("Try again 😄");
+      }
     });
 
-    giftAgain.addEventListener("click", () => {
-      winning = Math.floor(Math.random() * 3) + 1;
-      giftResult.hidden = true;
-      giftsWrap.style.display = "grid";
-      if (openGiftSurprise) openGiftSurprise.hidden = true;
-    });
+    giftAgain.addEventListener("click", resetGiftUI);
   }
 
-  // ===== Envelope popup on gift page =====
+  // ===== Envelope Popup (Gift page) =====
   const giftEnvelopeModal = document.getElementById("giftEnvelopeModal");
   const giftEnvelope = document.getElementById("giftEnvelope");
   const closeGiftBackdrop = document.getElementById("closeGiftEnvelope");

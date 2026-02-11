@@ -916,3 +916,7 @@ h1{
 .envelope.open .env-paper{
   transform: translateY(-10px);
 }
+.gift-special{
+  border-color: rgba(0,0,0,.18);
+  transform: translateY(-2px);
+}
