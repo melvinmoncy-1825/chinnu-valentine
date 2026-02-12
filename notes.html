@@ -58,6 +58,45 @@
     <p class="tiny">🤍🌹</p>
   </main>
 
+  <!-- Floating love hearts background -->
+  <div id="loveHearts" style="position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;"></div>
+
   <script src="script.js"></script>
+  <script>
+  // Floating hearts in the background
+  (function(){
+    const container = document.getElementById('loveHearts');
+    const hearts = ['❤️','💕','💖','🤍','🌹','💗','💓'];
+    function spawnHeart(){
+      const h = document.createElement('div');
+      h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+      h.style.cssText = `
+        position:absolute;
+        bottom:-40px;
+        left:${Math.random()*100}vw;
+        font-size:${14+Math.random()*18}px;
+        opacity:${(.3+Math.random()*.4).toFixed(2)};
+        animation: lhFloat ${6+Math.random()*6}s linear forwards;
+        pointer-events:none;
+      `;
+      container.appendChild(h);
+      setTimeout(()=>h.remove(), 12000);
+    }
+    // Spawn a few initially
+    for(let i=0;i<5;i++) setTimeout(spawnHeart, i*300);
+    setInterval(spawnHeart, 1200);
+
+    // Add the keyframe dynamically
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes lhFloat{
+        0%{ transform: translateY(0) rotate(0deg); opacity: .5; }
+        50%{ transform: translateY(-50vh) rotate(20deg); opacity: .6; }
+        100%{ transform: translateY(-110vh) rotate(-15deg); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+  })();
+  </script>
 </body>
 </html>
