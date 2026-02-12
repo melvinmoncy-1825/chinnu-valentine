@@ -1,7 +1,7 @@
 window.addEventListener("DOMContentLoaded", () => {
-  // ---------- Helpers ----------
   const $ = (id) => document.getElementById(id);
 
+  // ---------- Toast ----------
   const toast = $("toast");
   function showToast(msg) {
     if (!toast) return;
@@ -10,7 +10,7 @@ window.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => toast.classList.remove("show"), 2200);
   }
 
-  // ---------- Flowers (safe on all pages) ----------
+  // ---------- Flowers ----------
   const flowersLayer = $("flowers");
   const flowerEmojis = ["🌸", "🌺", "🌷", "🌹", "💮", "🌼"];
 
@@ -38,85 +38,12 @@ window.addEventListener("DOMContentLoaded", () => {
     for (let i = 0; i < count; i++) spawnFlower();
   }
 
-  // Start flower loop only if layer exists
   if (flowersLayer) {
     for (let i = 0; i < 8; i++) spawnFlower();
     setInterval(spawnFlower, 1100);
   }
 
-  // ---------- Index Envelope (only if exists) ----------
-  const indexModal = $("envelopeModal");
-  const indexEnvelope = $("envelope");
-  const indexCloseBackdrop = $("closeEnvelope");
-  const indexCloseX = $("closeEnvelopeX");
-  const surpriseBtn = $("surpriseBtn"); // may be removed, ok
-
-  function openIndexEnvelope() {
-    if (!indexModal) return;
-    indexModal.classList.add("show");
-    indexModal.setAttribute("aria-hidden", "false");
-    if (indexEnvelope) indexEnvelope.classList.remove("open");
-    burstFlowers(70);
-    showToast("I LOVE YOU BABY 🤍🌹");
-  }
-
-  function closeIndexEnvelope() {
-    if (!indexModal) return;
-    indexModal.classList.remove("show");
-    indexModal.setAttribute("aria-hidden", "true");
-  }
-
-  if (surpriseBtn) surpriseBtn.addEventListener("click", openIndexEnvelope);
-  if (indexEnvelope) indexEnvelope.addEventListener("click", () => indexEnvelope.classList.toggle("open"));
-  if (indexCloseBackdrop) indexCloseBackdrop.addEventListener("click", closeIndexEnvelope);
-  if (indexCloseX) indexCloseX.addEventListener("click", closeIndexEnvelope);
-
-  // ---------- Gallery Music (only if exists) ----------
-  const bgMusic = $("bgMusic");
-  const musicBtn = $("musicBtn");
-  let musicStarting = false;
-
-  function setMusicButtonText() {
-    if (!musicBtn || !bgMusic) return;
-    musicBtn.textContent = bgMusic.paused ? "▶️ Play music" : "🔇 Stop music";
-  }
-
-  async function startMusic() {
-    if (!bgMusic || musicStarting) return;
-    musicStarting = true;
-    if (musicBtn) musicBtn.disabled = true;
-
-    try {
-      bgMusic.volume = 0.85;
-      await bgMusic.play();
-      showToast("Music on 🎶");
-    } catch {
-      showToast("Tap again to play 🎶");
-    } finally {
-      musicStarting = false;
-      if (musicBtn) musicBtn.disabled = false;
-      setMusicButtonText();
-    }
-  }
-
-  function stopMusic() {
-    if (!bgMusic) return;
-    bgMusic.pause();
-    setMusicButtonText();
-    showToast("Music off");
-  }
-
-  if (musicBtn && bgMusic) {
-    setMusicButtonText();
-    musicBtn.addEventListener("click", async () => {
-      if (bgMusic.paused) await startMusic();
-      else stopMusic();
-    });
-    bgMusic.addEventListener("play", setMusicButtonText);
-    bgMusic.addEventListener("pause", setMusicButtonText);
-  }
-
-  // ---------- Gift page: Gift 3 ONLY + Envelope popup ----------
+  // ---------- Gift 3 only + Envelope popup ----------
   const giftsWrap = $("gifts");
   const giftResult = $("giftResult");
   const giftTitle = $("giftTitle");
@@ -129,7 +56,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const closeGiftBackdrop = $("closeGiftEnvelope");
   const closeGiftX = $("closeGiftEnvelopeX");
 
-  function openGiftEnvelopeModal() {
+  function openGiftEnvelopeModalFn() {
     if (!giftEnvelopeModal) return;
     giftEnvelopeModal.classList.add("show");
     giftEnvelopeModal.setAttribute("aria-hidden", "false");
@@ -138,29 +65,21 @@ window.addEventListener("DOMContentLoaded", () => {
     showToast("I LOVE YOU BABY 🤍🌹");
   }
 
-  function closeGiftEnvelopeModal() {
+  function closeGiftEnvelopeModalFn() {
     if (!giftEnvelopeModal) return;
     giftEnvelopeModal.classList.remove("show");
     giftEnvelopeModal.setAttribute("aria-hidden", "true");
   }
 
-  function resetGiftUI() {
-    if (giftResult) giftResult.hidden = true;
-    if (giftsWrap) giftsWrap.style.display = "grid";
-    if (openGiftSurprise) openGiftSurprise.hidden = true;
-  }
-
   if (giftsWrap && giftResult && giftTitle && giftText && giftAgain) {
-    const winning = 3; // ✅ Gift 3 ONLY
-
-    // ensure button hidden at start
+    const winning = 3; // Gift 3 ONLY
     if (openGiftSurprise) openGiftSurprise.hidden = true;
 
     giftsWrap.addEventListener("click", (e) => {
-      const b = e.target.closest(".gift");
-      if (!b) return;
+      const btn = e.target.closest(".gift");
+      if (!btn) return;
 
-      const pick = Number(b.dataset.g);
+      const pick = Number(btn.dataset.g);
 
       giftResult.hidden = false;
       giftsWrap.style.display = "none";
@@ -169,25 +88,29 @@ window.addEventListener("DOMContentLoaded", () => {
         burstFlowers(90);
         giftTitle.textContent = "💖 You found it!";
         giftText.textContent = "കുഞ്ഞേ… ഇതാ നിനക്കായി ഒരു സർപ്രൈസ് 💌";
-        if (openGiftSurprise) openGiftSurprise.hidden = false; // ✅ only gift 3
+        if (openGiftSurprise) openGiftSurprise.hidden = false;
         showToast("Open the surprise 💝");
       } else {
         giftTitle.textContent = "😄 Not this one!";
         giftText.textContent = "ഇത് അല്ല കുഞ്ഞേ… വീണ്ടും ശ്രമിക്കൂ 😄🎁";
-        if (openGiftSurprise) openGiftSurprise.hidden = true;  // ✅ hide for gift 1 & 2
+        if (openGiftSurprise) openGiftSurprise.hidden = true;
         showToast("Try again 😄");
       }
     });
 
-    giftAgain.addEventListener("click", resetGiftUI);
+    giftAgain.addEventListener("click", () => {
+      giftResult.hidden = true;
+      giftsWrap.style.display = "grid";
+      if (openGiftSurprise) openGiftSurprise.hidden = true;
+    });
   }
 
-  if (openGiftSurprise) openGiftSurprise.addEventListener("click", openGiftEnvelopeModal);
+  if (openGiftSurprise) openGiftSurprise.addEventListener("click", openGiftEnvelopeModalFn);
   if (giftEnvelope) giftEnvelope.addEventListener("click", () => giftEnvelope.classList.toggle("open"));
-  if (closeGiftBackdrop) closeGiftBackdrop.addEventListener("click", closeGiftEnvelopeModal);
-  if (closeGiftX) closeGiftX.addEventListener("click", closeGiftEnvelopeModal);
+  if (closeGiftBackdrop) closeGiftBackdrop.addEventListener("click", closeGiftEnvelopeModalFn);
+  if (closeGiftX) closeGiftX.addEventListener("click", closeGiftEnvelopeModalFn);
 
-  // ---------- Story keypad (only if exists) ----------
+  // ---------- Story keypad (password 1825) ----------
   const secretPortalBtn = $("secretPortalBtn");
   const keypadModal = $("keypadModal");
   const keypadClose = $("keypadClose");
@@ -248,7 +171,6 @@ window.addEventListener("DOMContentLoaded", () => {
       openKeypad();
     });
   }
-
   if (keypadClose) keypadClose.addEventListener("click", closeKeypad);
   if (keypadCloseX) keypadCloseX.addEventListener("click", closeKeypad);
 
@@ -281,14 +203,56 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
   if (kunlock) kunlock.addEventListener("click", tryUnlock);
 
-  // ---------- Escape closes whatever exists ----------
+  // ---------- Music (only if gallery has ids bgMusic + musicBtn) ----------
+  const bgMusic = $("bgMusic");
+  const musicBtn = $("musicBtn");
+  let musicStarting = false;
+
+  function setMusicButtonText() {
+    if (!musicBtn || !bgMusic) return;
+    musicBtn.textContent = bgMusic.paused ? "▶️ Play music" : "🔇 Stop music";
+  }
+
+  async function startMusic() {
+    if (!bgMusic || musicStarting) return;
+    musicStarting = true;
+    if (musicBtn) musicBtn.disabled = true;
+    try {
+      bgMusic.volume = 0.85;
+      await bgMusic.play();
+      showToast("Music on 🎶");
+    } catch {
+      showToast("Tap again to play 🎶");
+    } finally {
+      musicStarting = false;
+      if (musicBtn) musicBtn.disabled = false;
+      setMusicButtonText();
+    }
+  }
+
+  function stopMusic() {
+    if (!bgMusic) return;
+    bgMusic.pause();
+    setMusicButtonText();
+    showToast("Music off");
+  }
+
+  if (musicBtn && bgMusic) {
+    setMusicButtonText();
+    musicBtn.addEventListener("click", async () => {
+      if (bgMusic.paused) await startMusic();
+      else stopMusic();
+    });
+    bgMusic.addEventListener("play", setMusicButtonText);
+    bgMusic.addEventListener("pause", setMusicButtonText);
+  }
+
+  // ---------- ESC closes modals ----------
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
-    closeIndexEnvelope();
-    closeGiftEnvelopeModal();
+    closeGiftEnvelopeModalFn();
     closeKeypad();
   });
 });
