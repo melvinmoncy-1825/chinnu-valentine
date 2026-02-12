@@ -13,13 +13,15 @@ window.addEventListener("DOMContentLoaded", () => {
 
   if (!giftsWrap || !giftResult || !giftTitle || !giftText || !giftAgain || !openBtn) return;
 
-  openBtn.hidden = true;                 // ALWAYS hidden until Gift 3
-  const WIN = "3";                       // Gift 3 only
+  openBtn.hidden = true;
+  openBtn.style.display = "none";
+  const WIN = "3";
 
   function reset() {
     giftResult.hidden = true;
     giftsWrap.style.display = "grid";
     openBtn.hidden = true;
+    openBtn.style.display = "none";
   }
 
   giftsWrap.addEventListener("click", (e) => {
@@ -34,11 +36,13 @@ window.addEventListener("DOMContentLoaded", () => {
     if (pick === WIN) {
       giftTitle.textContent = "💖 You found it!";
       giftText.textContent = "കുഞ്ഞേ… ഇതാ നിനക്കായി ഒരു സർപ്രൈസ് 💌";
-      openBtn.hidden = false;                  // ONLY here
+      openBtn.hidden = false;
+      openBtn.style.display = "inline-flex"; 
     } else {
       giftTitle.textContent = "😄 Not this one!";
       giftText.textContent = "ഇത് അല്ല കുഞ്ഞേ… വീണ്ടും ശ്രമിക്കൂ 😄🎁";
-      openBtn.hidden = true;                   // FORCE hide
+      openBtn.hidden = true;
+      openBtn.style.display = "none";
     }
   });
 
