@@ -42,74 +42,48 @@ window.addEventListener("DOMContentLoaded", () => {
     for (let i = 0; i < 8; i++) spawnFlower();
     setInterval(spawnFlower, 1100);
   }
+// ---------- Gift page: ONLY Gift 3 has surprise ----------
+const giftsWrap = document.getElementById("gifts");
+const giftResult = document.getElementById("giftResult");
+const giftTitle = document.getElementById("giftTitle");
+const giftText = document.getElementById("giftText");
+const giftAgain = document.getElementById("giftAgain");
+const openGiftSurprise = document.getElementById("openGiftSurprise");
 
-  // ---------- Gift 3 only + Envelope popup ----------
-  const giftsWrap = $("gifts");
-  const giftResult = $("giftResult");
-  const giftTitle = $("giftTitle");
-  const giftText = $("giftText");
-  const giftAgain = $("giftAgain");
-  const openGiftSurprise = $("openGiftSurprise");
+// Always hide surprise button at start
+if (openGiftSurprise) openGiftSurprise.hidden = true;
 
-  const giftEnvelopeModal = $("giftEnvelopeModal");
-  const giftEnvelope = $("giftEnvelope");
-  const closeGiftBackdrop = $("closeGiftEnvelope");
-  const closeGiftX = $("closeGiftEnvelopeX");
+function resetGiftUI() {
+  if (giftResult) giftResult.hidden = true;
+  if (giftsWrap) giftsWrap.style.display = "grid";
+  if (openGiftSurprise) openGiftSurprise.hidden = true; // ✅ hide again
+}
 
-  function openGiftEnvelopeModalFn() {
-    if (!giftEnvelopeModal) return;
-    giftEnvelopeModal.classList.add("show");
-    giftEnvelopeModal.setAttribute("aria-hidden", "false");
-    if (giftEnvelope) giftEnvelope.classList.remove("open");
-    burstFlowers(80);
-    showToast("I LOVE YOU BABY 🤍🌹");
-  }
+if (giftsWrap && giftResult && giftTitle && giftText && giftAgain) {
+  const winning = 3; // ✅ ONLY gift 3
 
-  function closeGiftEnvelopeModalFn() {
-    if (!giftEnvelopeModal) return;
-    giftEnvelopeModal.classList.remove("show");
-    giftEnvelopeModal.setAttribute("aria-hidden", "true");
-  }
+  giftsWrap.addEventListener("click", (e) => {
+    const btn = e.target.closest(".gift");
+    if (!btn) return;
 
-  if (giftsWrap && giftResult && giftTitle && giftText && giftAgain) {
-    const winning = 3; // Gift 3 ONLY
-    if (openGiftSurprise) openGiftSurprise.hidden = true;
+    const pick = Number(btn.dataset.g);
 
-    giftsWrap.addEventListener("click", (e) => {
-      const btn = e.target.closest(".gift");
-      if (!btn) return;
+    giftResult.hidden = false;
+    giftsWrap.style.display = "none";
 
-      const pick = Number(btn.dataset.g);
+    if (pick === winning) {
+      giftTitle.textContent = "💖 You found it!";
+      giftText.textContent = "കുഞ്ഞേ… ഇതാ നിനക്കായി ഒരു സർപ്രൈസ് 💌";
+      if (openGiftSurprise) openGiftSurprise.hidden = false; // ✅ ONLY here
+    } else {
+      giftTitle.textContent = "😄 Not this one!";
+      giftText.textContent = "ഇത് അല്ല കുഞ്ഞേ… വീണ്ടും ശ്രമിക്കൂ 😄🎁";
+      if (openGiftSurprise) openGiftSurprise.hidden = true;  // ✅ Gift 1 & 2 no surprise
+    }
+  });
 
-      giftResult.hidden = false;
-      giftsWrap.style.display = "none";
-
-      if (pick === winning) {
-        burstFlowers(90);
-        giftTitle.textContent = "💖 You found it!";
-        giftText.textContent = "കുഞ്ഞേ… ഇതാ നിനക്കായി ഒരു സർപ്രൈസ് 💌";
-        if (openGiftSurprise) openGiftSurprise.hidden = false;
-        showToast("Open the surprise 💝");
-      } else {
-        giftTitle.textContent = "😄 Not this one!";
-        giftText.textContent = "ഇത് അല്ല കുഞ്ഞേ… വീണ്ടും ശ്രമിക്കൂ 😄🎁";
-        if (openGiftSurprise) openGiftSurprise.hidden = true;
-        showToast("Try again 😄");
-      }
-    });
-
-    giftAgain.addEventListener("click", () => {
-      giftResult.hidden = true;
-      giftsWrap.style.display = "grid";
-      if (openGiftSurprise) openGiftSurprise.hidden = true;
-    });
-  }
-
-  if (openGiftSurprise) openGiftSurprise.addEventListener("click", openGiftEnvelopeModalFn);
-  if (giftEnvelope) giftEnvelope.addEventListener("click", () => giftEnvelope.classList.toggle("open"));
-  if (closeGiftBackdrop) closeGiftBackdrop.addEventListener("click", closeGiftEnvelopeModalFn);
-  if (closeGiftX) closeGiftX.addEventListener("click", closeGiftEnvelopeModalFn);
-
+  giftAgain.addEventListener("click", resetGiftUI);
+}
   // ---------- Story keypad (password 1825) ----------
   const secretPortalBtn = $("secretPortalBtn");
   const keypadModal = $("keypadModal");
