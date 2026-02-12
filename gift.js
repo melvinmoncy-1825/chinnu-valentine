@@ -6,20 +6,20 @@ window.addEventListener("DOMContentLoaded", () => {
   const giftAgain = document.getElementById("giftAgain");
   const openGiftSurprise = document.getElementById("openGiftSurprise");
 
-  const giftEnvelopeModal = document.getElementById("giftEnvelopeModal");
-  const giftEnvelope = document.getElementById("giftEnvelope");
-  const closeGiftBackdrop = document.getElementById("closeGiftEnvelope");
-  const closeGiftX = document.getElementById("closeGiftEnvelopeX");
+  const modal = document.getElementById("giftEnvelopeModal");
+  const env = document.getElementById("giftEnvelope");
+  const closeBg = document.getElementById("closeGiftEnvelope");
+  const closeX = document.getElementById("closeGiftEnvelopeX");
 
-  // If this page doesn't have gift UI, do nothing
+  // Not gift page → do nothing
   if (!giftsWrap || !giftResult || !giftTitle || !giftText || !giftAgain) return;
 
   // Always hide surprise button initially
   if (openGiftSurprise) openGiftSurprise.hidden = true;
 
-  const WINNING = "3"; // ✅ only gift 3
+  const WIN = "3"; // ✅ ONLY Gift 3
 
-  function resetGiftUI() {
+  function reset() {
     giftResult.hidden = true;
     giftsWrap.style.display = "grid";
     if (openGiftSurprise) openGiftSurprise.hidden = true;
@@ -29,44 +29,42 @@ window.addEventListener("DOMContentLoaded", () => {
     const btn = e.target.closest(".gift");
     if (!btn) return;
 
-    const pick = btn.getAttribute("data-g"); // string "1"/"2"/"3"
+    const pick = btn.getAttribute("data-g"); // "1" / "2" / "3"
 
     giftResult.hidden = false;
     giftsWrap.style.display = "none";
 
-    if (pick === WINNING) {
+    if (pick === WIN) {
       giftTitle.textContent = "💖 You found it!";
       giftText.textContent = "കുഞ്ഞേ… ഇതാ നിനക്കായി ഒരു സർപ്രൈസ് 💌";
-      if (openGiftSurprise) openGiftSurprise.hidden = false; // ✅ only gift 3
+      if (openGiftSurprise) openGiftSurprise.hidden = false;
+      window.showToast?.("Open Surprise 💌");
     } else {
       giftTitle.textContent = "😄 Not this one!";
       giftText.textContent = "ഇത് അല്ല കുഞ്ഞേ… വീണ്ടും ശ്രമിക്കൂ 😄🎁";
-      if (openGiftSurprise) openGiftSurprise.hidden = true; // ✅ gift 1/2 no surprise
+      if (openGiftSurprise) openGiftSurprise.hidden = true;
+      window.showToast?.("Try again 😄");
     }
   });
 
-  giftAgain.addEventListener("click", resetGiftUI);
+  giftAgain.addEventListener("click", reset);
 
-  // Envelope modal
   function openModal() {
-    if (!giftEnvelopeModal) return;
-    giftEnvelopeModal.classList.add("show");
-    giftEnvelopeModal.setAttribute("aria-hidden", "false");
-    if (giftEnvelope) giftEnvelope.classList.remove("open");
+    if (!modal) return;
+    modal.classList.add("show");
+    modal.setAttribute("aria-hidden", "false");
+    env?.classList.remove("open");
+    window.showToast?.("I LOVE YOU BABY 🤍🌹");
   }
-
   function closeModal() {
-    if (!giftEnvelopeModal) return;
-    giftEnvelopeModal.classList.remove("show");
-    giftEnvelopeModal.setAttribute("aria-hidden", "true");
+    if (!modal) return;
+    modal.classList.remove("show");
+    modal.setAttribute("aria-hidden", "true");
   }
 
-  if (openGiftSurprise) openGiftSurprise.addEventListener("click", openModal);
-  if (giftEnvelope) giftEnvelope.addEventListener("click", () => giftEnvelope.classList.toggle("open"));
-  if (closeGiftBackdrop) closeGiftBackdrop.addEventListener("click", closeModal);
-  if (closeGiftX) closeGiftX.addEventListener("click", closeModal);
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeModal();
-  });
+  openGiftSurprise?.addEventListener("click", openModal);
+  env?.addEventListener("click", () => env.classList.toggle("open"));
+  closeBg?.addEventListener("click", closeModal);
+  closeX?.addEventListener("click", closeModal);
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
 });
