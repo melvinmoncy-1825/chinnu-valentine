@@ -232,6 +232,108 @@ h1{
   }
 }
 
+/* ===== Slideshow (when music plays) ===== */
+.slideshow-overlay{
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .6s ease;
+}
+.slideshow-overlay.active{
+  opacity: 1;
+  pointer-events: all;
+}
+
+.slideshow-overlay img{
+  position: absolute;
+  max-width: 92vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 16px;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 1s ease, transform 4s ease;
+  box-shadow: 0 0 60px rgba(255,255,255,0.08);
+}
+.slideshow-overlay img.slide-active{
+  opacity: 1;
+  transform: scale(1);
+}
+
+.slideshow-caption{
+  position: absolute;
+  bottom: 40px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #fff;
+  font-weight: 900;
+  font-size: 22px;
+  text-shadow: 0 2px 12px rgba(0,0,0,.7);
+  opacity: 0;
+  transition: opacity .8s ease;
+  pointer-events: none;
+}
+.slideshow-overlay.active .slideshow-caption{
+  opacity: 1;
+}
+
+.slideshow-counter{
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  color: rgba(255,255,255,.6);
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.slideshow-close{
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.3);
+  background: rgba(0,0,0,.5);
+  color: #fff;
+  font-size: 24px;
+  font-weight: 900;
+  cursor: pointer;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  backdrop-filter: blur(4px);
+  transition: background .2s;
+}
+.slideshow-close:hover{
+  background: rgba(255,255,255,.2);
+}
+
+.slideshow-hearts{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.slideshow-hearts .s-heart{
+  position: absolute;
+  bottom: -40px;
+  font-size: 20px;
+  opacity: 0.5;
+  animation: s-float 6s ease-in infinite;
+}
+@keyframes s-float{
+  0%{ transform: translateY(0) rotate(0); opacity: .5; }
+  100%{ transform: translateY(-110vh) rotate(45deg); opacity: 0; }
+}
+
 /* Note */
 .note{
   margin-top: 14px;
